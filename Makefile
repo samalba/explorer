@@ -8,6 +8,6 @@ build-prep:
 	yarn install --mutex network --non-interactive
 
 build-site:
-	yarn build:site
+	yarn build
 
 .PHONY: build build-site build-prep
