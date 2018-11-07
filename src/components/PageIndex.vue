@@ -1,6 +1,6 @@
 <template lang="pug">
 tm-page(title='Testnet Explorer')
-  tm-part(title='Testnet Data')
+  tm-part(title='Testnet Data' v-if="!config.localDev")
     tm-list-item(dt='Testnet Version' :dd='bc.status.node_info.network')
     // tm-list-item(dt='Tendermint Version' :dd='bc.status.node_info.version')
     tm-list-item(dt='Status' :dd='validatorsActive' :href="`${bc.rpc}/consensus_state`" target="_blank")
@@ -25,7 +25,7 @@ tm-page(title='Testnet Explorer')
         tm-field.node-input(
           type="text"
           v-model="bc.rpc")
-    tm-list-item(dt='LCD Endpoint')
+    tm-list-item(dt='LCD Endpoint' v-if="!config.localDev")
       div(slot="dd")
         tm-field.node-input(
           type="text"

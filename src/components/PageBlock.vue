@@ -131,6 +131,14 @@ export default {
   }),
   methods: {
     async fetchBlock() {
+      if (this.blockchain.localDev) {
+        let url = `${this.blockchain.rpc}/block?height=${this.$route.params.block}`
+        let json = await axios.get(url)
+        this.block_meta = json.data.result.block_meta
+        this.block = json.data.result.block
+        this.block.data.txs && this.queryTxs().catch(err => console.log(err))
+        return
+      }
       let url = `${this.blockchain.lcd}/blocks/${this.$route.params.block}`
       let json = await axios.get(url)
       this.block_meta = json.data.block_meta

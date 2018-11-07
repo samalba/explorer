@@ -1,7 +1,8 @@
 const state = {
   activeMenu: '',
   blockchainSelect: false,
-  desktop: false
+  desktop: false,
+  localDev: (process.env.VUE_APP_LOCAL_DEV !== undefined)
 }
 
 const mutations = {

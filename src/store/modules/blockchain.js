@@ -1,9 +1,15 @@
 import axios from "axios"
 import { RpcClient } from "tendermint"
 
+
+
 const state = {
-  rpc: "https://gaia-seeds.interblock.io",
+  localDev: (process.env.VUE_APP_LOCAL_DEV !== undefined),
+  rpc: (process.env.VUE_APP_LOCAL_DEV !== undefined) ?
+        "http://localhost:26657" : "https://gaia-seeds.interblock.io",
   lcd: "https://gaia-seeds.interblock.io:1317",
+  wss:  (process.env.VUE_APP_LOCAL_DEV !== undefined) ?
+        "ws://localhost:26657" : "wss://gaia-seeds.interblock.io:443",
   status: {
     listen_addr: "",
     sync_info: {
@@ -24,7 +30,7 @@ const state = {
   roundStep: ""
 }
 
-const client = RpcClient("wss://gaia-seeds.interblock.io:443")
+const client = RpcClient(state.wss)
 
 const actions = {
   subNewBlock({ commit, dispatch }) {
@@ -76,6 +82,8 @@ const actions = {
     return Promise.resolve()
   },
   async getValidators({ state, commit, dispatch }) {
+    if (state.localDev)
+        return
     let json = await axios.get(`${state.lcd}/stake/validators`)
     commit("setValidators", json.data)
     dispatch("updateValidatorAvatars")

@@ -29,6 +29,9 @@ yarn
 
 # serve with hot reload at localhost:8080
 yarn serve
+
+# serve in "local dev mode" (only enables basic features like the block explorer)
+VUE_APP_LOCAL_DEV=true yarn serve
 ```
 
 ## Deploy
