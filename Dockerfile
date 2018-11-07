@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:latest as build-env
 
 # Create app directory
 RUN mkdir -p /usr/src/app
@@ -14,5 +14,7 @@ COPY . /usr/src/app
 
 RUN yarn build
 
-EXPOSE 8080
-CMD [ "yarn", "start" ]
+FROM nginx
+
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build-env /usr/src/app/dist /usr/share/nginx/html
