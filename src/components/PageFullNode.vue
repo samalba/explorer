@@ -1,12 +1,12 @@
 <template lang="pug">
-tm-page(:title="`Node: ${getIp(fullNode)}`")
+tm-page(:title="`Node: ${getDisplayIp(fullNode)}`")
   div(slot="menu"): tm-tool-bar
     router-link(to="/nodes" exact): i.material-icons arrow_back
     anchor-copy(:value="persistentPeer" icon="content_copy")
 
   tm-part(title='ID')
     tm-list-item(dt="Moniker" :dd="fullNode.node_info.moniker")
-    tm-list-item(dt="IP" :dd="getIp(fullNode)")
+    tm-list-item(dt="IP" :dd="getDisplayIp(fullNode)")
     tm-list-item(dt="Start Date" :dd="fullNode.connection_status && readableDate(fullNode.connection_status.SendMonitor.Start)")
 
   tm-part(title='Pub Key')
@@ -52,8 +52,8 @@ export default {
       if (this.nodes && this.nodes.length > 0) {
         return this.nodes.find(
           v =>
-            this.urlsafeIp(v.node_info.listen_addr) ===
-            this.$route.params.node + ":26656"
+            this.urlsafeIp(this.getIp(v)) ===
+            this.$route.params.node
         )
       } else {
         return this.tmpFullNode
@@ -80,8 +80,11 @@ export default {
     getIp(fullNode) {
       return (
         fullNode.node_info.listen_addr &&
-        fullNode.node_info.listen_addr.split(":")[0]
+        fullNode.node_info.listen_addr.replace('://', '-')
       )
+    },
+    getDisplayIp(fullNode) {
+      return fullNode.node_info.listen_addr
     },
     readableDate(ms) {
       return moment(ms).format("YYYY-MM-DD h:mm:ss A")
