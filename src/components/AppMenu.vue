@@ -3,11 +3,11 @@ menu.app-menu
   .app-menu-main
     tm-list-item(to="/" exact @click.native="close" title="Blockchain")
     tm-list-item(to="/nodes" exact @click.native="close" :title="`Full Nodes (${nodes.length})`")
-    tm-list-item(to="/validators" @click.native="close" :title="`Validators (${votingValidators})`" v-bind:class="{ 'active': isValidatorPage }")
-    tm-list-item(to="/validators-revoked" @click.native="close" :title="`Revoked Validators (${revokedValidators})`")
+    tm-list-item(to="/validators" @click.native="close" :title="`Validators (${votingValidators})`" v-bind:class="{ 'active': isValidatorPage }" v-if="!config.localDev")
+    tm-list-item(to="/validators-revoked" @click.native="close" :title="`Revoked Validators (${revokedValidators})`" v-if="!config.localDev")
     tm-list-item(to="/search" exact @click.native="close" title="Search")
 
-  tm-part(title='Testnet Information')
+  tm-part(title='Testnet Information' v-if="!config.localDev")
     tm-list-item(type="anchor" href="https://riot.im/app/#/room/#cosmos_validators:matrix.org" @click.native="close" title="Validator Chat" subtitle="#cosmos-validators" target="_blank")
     tm-list-item(type="anchor" href="https://github.com/cosmos/cosmos-sdk/blob/develop/cmd/gaia/testnets/README.md" @click.native="close" title="Join Testnet" subtitle="run a full node/validator" target="_blank")
     tm-list-item(type="anchor" href="https://gaia.faucetcosmos.network" @click.native="close" title="Steak Faucet" subtitle="vegan artisanal steak" target="_blank")
@@ -26,7 +26,7 @@ export default {
     TmPart
   },
   computed: {
-    ...mapGetters(["proposals", "nodes", "validators"]),
+    ...mapGetters(["proposals", "nodes", "validators", "config"]),
     proposalAlerts() {
       return this.proposals.filter(p => p.flags.read === false).length
     },
