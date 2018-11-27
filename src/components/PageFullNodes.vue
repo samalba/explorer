@@ -8,7 +8,7 @@ tm-page(title='Full Nodes')
     v-for="i in orderedFullNodes"
     :key="i.node_info.listen_addr"
     :title="i.node_info.moniker"
-    :subtitle="getIp(i)"
+    :subtitle="getDisplayIp(i)"
     icon='storage'
     :to="`/nodes/${urlsafeIp(getIp(i))}`")
 </template>
@@ -58,8 +58,11 @@ export default {
     getIp(fullNode) {
       return (
         fullNode.node_info.listen_addr &&
-        fullNode.node_info.listen_addr.split(":")[0]
+        fullNode.node_info.listen_addr.replace('://', '-')
       )
+    },
+    getDisplayIp(fullNode) {
+      return fullNode.node_info.listen_addr
     }
   }
 }

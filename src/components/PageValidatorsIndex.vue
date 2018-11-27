@@ -4,10 +4,10 @@ tm-page(title='Validators')
     v-if="orderedValidators.length > 0"
     v-for="v in orderedValidators"
     :image="v.avatarUrl"
-    :key="v.owner"
+    :key="v.consensus_pubkey"
     :title="validatorTitle(v)"
     :subtitle="votingPower(v)"
-    :to="`/validators/${v.owner}`")
+    :to="`/validators/${v.consensus_pubkey}`")
   tm-list-item(v-else title="validators are loading...")
 </template>
 
@@ -27,7 +27,7 @@ export default {
   computed: {
     ...mapGetters(["validators"]),
     votingValidators() {
-      if (this.validators && this.validators.length > 1) {
+      if (this.validators && this.validators.length > 0) {
         return this.validators.filter(v => !v.revoked)
       } else {
         return []

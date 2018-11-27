@@ -13,9 +13,10 @@ export default function(validator) {
   }
   string += power + " voting power"
 
-  let shortOwner = validator.owner.split(1)[1]
+  let shortOwner = validator.operator_address.split(1)[1]
   shortOwner = shortOwner.slice(0, 8)
   string += ` (${shortOwner})`
+
 
   return string
 }
