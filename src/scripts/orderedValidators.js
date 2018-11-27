@@ -3,7 +3,7 @@ export default function(validators) {
   // let validatorsWithAvatars = []
   // let validatorsWithoutAvatars = []
   let orderedValidators = []
-  if (validators && validators.length > 1) {
+  if (validators && validators.length > 0) {
     orderedValidators = orderBy(
       validators,
       [i => i.description.moniker.toLowerCase()],

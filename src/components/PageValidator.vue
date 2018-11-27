@@ -17,8 +17,8 @@ tm-page(title='Validator')
       tm-list-item(dt="Details" :dd="validator.description.details")
 
   tm-part(title='Validator Keys')
-    tm-list-item(dt="Owner" :dd="validator.owner")
-    tm-list-item(dt="Pub Key" :dd="validator.pub_key")
+    tm-list-item(dt="Owner" :dd="validator.operator_address")
+    tm-list-item(dt="Pub Key" :dd="validator.consensus_pubkey")
 
   tm-part(title='Validator Stake' v-if="!validator.revoked")
     tm-list-item(dt="Voting Power" :dd="validator.tokens")
@@ -43,7 +43,7 @@ export default {
     validator() {
       if (this.validators && this.validators.length > 0) {
         return this.validators.find(
-          v => this.$route.params.validator === v.owner
+          v => this.$route.params.validator === v.consensus_pubkey
         )
       } else {
         return this.tmpValidator
