@@ -1,15 +1,20 @@
 import axios from "axios"
 import { RpcClient } from "tendermint"
 
-
+const getLocalDevPort = function() {
+    // Support optional local RPC port in the query string
+    const urlParams = new URLSearchParams(window.location.search)
+    const altPort = urlParams.get('rpc_port')
+    return altPort ? altPort : "26657"
+}
 
 const state = {
   localDev: (process.env.VUE_APP_LOCAL_DEV !== undefined),
   rpc: (process.env.VUE_APP_LOCAL_DEV !== undefined) ?
-        "http://localhost:26657" : "https://gaia-seeds.interblock.io",
+        "http://localhost:" + getLocalDevPort() : "https://gaia-seeds.interblock.io",
   lcd: "https://gaia-seeds.interblock.io:1317",
   wss:  (process.env.VUE_APP_LOCAL_DEV !== undefined) ?
-        "ws://localhost:26657" : "wss://gaia-seeds.interblock.io:443",
+        "ws://localhost:" + getLocalDevPort() : "wss://gaia-seeds.interblock.io:443",
   status: {
     listen_addr: "",
     sync_info: {

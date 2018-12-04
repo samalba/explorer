@@ -50,7 +50,7 @@ const routes = [
   }
 ]
 
-export default new Router({
+const router = new Router({
   mode: "history",
   routes: routes,
   scrollBehavior(to, from, savedPosition) {
@@ -66,3 +66,18 @@ export default new Router({
     }
   }
 })
+
+router.beforeEach((to, from, next) => {
+    const hasQueryParams = (route) => {
+        return !!Object.keys(route.query).length
+    }
+
+    if (!hasQueryParams(to) && hasQueryParams(from)) {
+        const toWithQuery = Object.assign({}, to, {query: from.query})
+        next(toWithQuery)
+        return
+    }
+    next()
+})
+
+export default router
